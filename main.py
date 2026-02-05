@@ -5,10 +5,13 @@ import os
 
 app = FastAPI()
 
+# API key from environment
 API_KEY = os.getenv("API_KEY")
 
+# In-memory conversation store
 conversations = {}
 
+# ---------- Scam Detection ----------
 def detect_scam(message: str) -> bool:
     scam_keywords = [
         "otp", "verify", "account", "blocked", "kyc",
@@ -17,6 +20,7 @@ def detect_scam(message: str) -> bool:
     message = message.lower()
     return any(word in message for word in scam_keywords)
 
+# ---------- Intelligence Extraction ----------
 def extract_intelligence(text: str):
     upi_pattern = r"[a-zA-Z0-9.\-_]{2,}@[a-zA-Z]{2,}"
     bank_pattern = r"\b\d{9,18}\b"
@@ -28,6 +32,7 @@ def extract_intelligence(text: str):
         "phishing_urls": re.findall(url_pattern, text)
     }
 
+# ---------- Agent Reply ----------
 def agent_reply():
     replies = [
         "I am not very good with these things, can you explain again?",
@@ -37,6 +42,7 @@ def agent_reply():
     ]
     return replies[int(time.time()) % len(replies)]
 
+# ---------- Honeypot API ----------
 @app.post("/honeypot")
 async def honeypot(
     request: Request,
@@ -46,7 +52,7 @@ async def honeypot(
     if API_KEY is None or x_api_key != API_KEY:
         raise HTTPException(status_code=401, detail="Invalid API Key")
 
-    # ✅ BULLETPROOF BODY HANDLING
+    # BULLETPROOF BODY HANDLING
     body = await request.body()
     if body:
         try:
@@ -56,9 +62,13 @@ async def honeypot(
     else:
         data = {}
 
-    message = data.get("message", "")
-    conversation_id = data.get("conversation_id", "default")
+    # FORCE message to always be a string
+    raw_message = data.get("message", "")
+    message = str(raw_message)
 
+    conversation_id = str(data.get("conversation_id", "default"))
+
+    # Initialize conversation
     if conversation_id not in conversations:
         conversations[conversation_id] = {
             "start_time": time.time(),
@@ -73,18 +83,22 @@ async def honeypot(
     convo = conversations[conversation_id]
     convo["turns"] += 1
 
+    # Scam detection
     scam_detected = detect_scam(message)
 
+    # Intelligence extraction
     extracted = extract_intelligence(message)
     for key in extracted:
         convo["intelligence"][key].extend(extracted[key])
 
+    # Agent response
     response_message = (
         agent_reply()
         if scam_detected
         else "Sorry, can you please clarify?"
     )
 
+    # Final response
     return {
         "scam_detected": scam_detected,
         "engagement": {
