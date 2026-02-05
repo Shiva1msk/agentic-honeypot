@@ -178,7 +178,6 @@ This project demonstrates real-world considerations such as:
 * Robust error handling
 * Cloud deployment and evaluation readiness
 
-```
 
 
 
