@@ -1,64 +1,61 @@
-
-# Agentic Honey-Pot for Scam Detection & Intelligence Extraction
+🛡️ Agentic Honey-Pot for Scam Detection & Intelligence Extraction
 
 This project implements an AI-powered Agentic Honeypot system that detects scam
 messages and autonomously engages scammers to extract actionable intelligence such
 as bank account numbers, UPI IDs, and phishing URLs.
 
-Built and deployed as part of the **India AI Impact Buildathon** under the
-“AI for Fraud Detection & User Safety” challenge.
+Built and deployed as part of the India AI Impact Buildathon under the
+AI for Fraud Detection & User Safety challenge.
 
----
+🚀 Key Features
 
-## 🚀 Key Features
-- Scam intent detection from incoming messages
-- Autonomous agent-based engagement after detection
-- Multi-turn conversation handling using conversation IDs
-- Extraction of:
-  - UPI IDs
-  - Bank account numbers
-  - Phishing URLs
-- Secure API using API-key authentication
-- Robust handling of malformed / empty requests
-- Public deployment with stable uptime
+Scam intent detection from incoming messages
 
----
+Autonomous agent-based engagement after detection
 
-## 🧠 System Flow
-1. Incoming messages are received via API
-2. Scam intent is detected using keyword analysis
-3. An autonomous agent responds with a believable human persona
-4. Scam intelligence is extracted and accumulated
-5. Structured JSON output is returned for evaluation
+Multi-turn conversation handling using conversation IDs
 
----
+Extraction of:
 
-## 🔐 Authentication
-All requests must include the following header:
+UPI IDs
 
-```
+Bank account numbers
+
+Phishing URLs
+
+Secure API using API-key authentication
+
+Robust handling of malformed or empty requests
+
+Public deployment with stable uptime
+
+🧠 System Flow
+
+Incoming messages are received via an API
+
+Scam intent is detected using keyword-based analysis
+
+An autonomous agent responds with a believable human persona
+
+Scam intelligence is extracted and accumulated
+
+Structured JSON output is returned for evaluation
+
+🔐 Authentication
+
+All requests must include the following HTTP header:
 
 x-api-key: <API_KEY>
 
-````
-
----
-
-## 📡 API Endpoint
-
-### POST /honeypot
-
-#### Example Request
-```json
+📡 API Endpoint
+POST /honeypot
+Example Request
 {
   "message": "Your account is blocked. Send your UPI immediately",
   "conversation_id": "conv_001"
 }
-````
 
-#### Example Response
-
-```json
+Example Response
 {
   "scam_detected": true,
   "engagement": {
@@ -72,30 +69,23 @@ x-api-key: <API_KEY>
   },
   "response": "I am not very good with these things, can you explain again?"
 }
-```
 
----
+🛠 Tech Stack
 
-## 🛠 Tech Stack
+Python
 
-* Python
-* FastAPI
-* Regex-based intelligence extraction
-* Render (deployment)
+FastAPI
 
----
+Regex-based intelligence extraction
 
-## 🌍 Deployment
+Render (cloud deployment)
 
-The API is deployed as a public endpoint and tested using the official
-Honeypot Endpoint Tester provided by the hackathon.
+🌍 Deployment
 
----
+The API is deployed as a public endpoint and validated using the official
+Honeypot Endpoint Tester provided by the hackathon platform.
 
-## 🏁 Status
+🏁 Status
 
 ✅ Endpoint tested and validated
 ✅ Successfully submitted for automated evaluation
-
-```
-
